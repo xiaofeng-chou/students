@@ -4,7 +4,12 @@ import com.example.demo.entity.StudentsEntity;
 import com.example.demo.repositery.studentsRepositery;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+
+import javax.persistence.criteria.Predicate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -59,7 +64,6 @@ public class studentService implements studentServiceI {                    //�
         }
          return "StudentsAge(性别)：只能填写 男/女 , \nStudentsPhone(手机号):不正确 ' "  ;
     }
-
     //更新学生信息
     @Override
     public StudentsEntity sdtupd( Integer id,StudentAdd studentAdd) {
@@ -71,6 +75,22 @@ public class studentService implements studentServiceI {                    //�
         se.setStudentsPhone (studentAdd.getStudentsPhone ());
         return studentsRepositery.save (se);
     }
+
+    @Override
+    public Page<StudentsEntity> getPageList(Integer p, Integer s, String studentsName) {
+        Page<StudentsEntity> page = studentsRepositery.findAll ((root, query, cb) ->
+        {
+            List<Predicate> predicate = new ArrayList<>();
+            if(studentsName != null && studentsName.trim().length() != 0)
+                predicate.add(cb.like(root.get("students_name").as(String.class), studentsName + "%"));  // 用户标识
+            // 加入过滤条件
+            query.where(predicate.toArray(new Predicate[predicate.size()]));
+            return null;
+        }, PageRequest.of(p - 1, s));
+        return page;
+    }
+
+    //分页实现
 
 
     @Autowired              //

@@ -1,13 +1,19 @@
 package com.example.demo.controller;
+import com.example.demo.Eorr.Resut;
 import com.example.demo.entity.StudentAdd;
 import com.example.demo.entity.StudentsEntity;
+import com.example.demo.repositery.studentsRepositery;
 import com.example.demo.service.studentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.awt.print.Book;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -30,12 +36,14 @@ public class studentController {
     }
     //添加学生信息
     @PutMapping(value = "/add")
-    public Object add(@RequestBody @Valid StudentAdd StudentAdd,BindingResult bindingResult){                  // @Valid 表达验证，
-        if (bindingResult.hasErrors ()){                //是否报错信息
+    public Object add(@RequestBody @Valid StudentAdd studentAdd,BindingResult bindingResult){
+        if (bindingResult.hasErrors ()){
+            //是否报错信息
             System.out.println (bindingResult.getFieldError ().getDefaultMessage ());           //输出报错信息
-            return "年龄不能为空！！";
+            return "学生年龄必须大于18";
         }
-        return studentService.sdtadd (StudentAdd);
+        return studentService.sdtsel ();
+
     }
     //修改学生信息
     @PutMapping(value = "/upd/{id}")
@@ -53,6 +61,22 @@ public class studentController {
         studentService.sdtDel (id);
         return "删除成功！";
     }
+    //分页查询
+    @RequestMapping(value = "/selpage")
+    public Object page(@RequestParam("p") Integer p, @RequestParam("s") Integer s, @RequestParam(value = "name", required = false) String studentsName)
+    {
+        Page<StudentsEntity> page = studentService.getPageList(p, s, studentsName);
+        return new HashMap<String, Object> ()
+        {{
+            put("data", page.getContent());     //返回数据
+            put("totalElements", page.getTotalElements());  //数据库中数据条数
+            put("totalPages", page.getTotalPages());    //返回页数（）
+            put("p", p);
+            put("s", s);
+        }};
+    }
+
+
     @Autowired
     private studentService studentService;
 }

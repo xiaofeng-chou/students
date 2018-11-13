@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.entity.StudentAdd;
 import com.example.demo.entity.StudentsEntity;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -21,8 +22,9 @@ public interface studentServiceI {
     Object sdtadd(StudentAdd studentAdd);
     //更新
     StudentsEntity sdtupd(Integer id,StudentAdd studentAdd );
-
-
+    //分页查询
+     Page<StudentsEntity> getPageList(Integer p, Integer s, String studentsName);
+    //
 
 
 }
