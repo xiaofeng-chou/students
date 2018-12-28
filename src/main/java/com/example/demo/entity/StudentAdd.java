@@ -10,15 +10,20 @@ import javax.validation.constraints.NotNull;
  * */
 @Data
 public class StudentAdd {
-    private String      studentsName;
+    //学生姓名
+    @NotNull(message = "学生姓名不能为空")
+    private String studentsName;
     //学生性别
-    private String   studentsGender;
+    @NotNull(message = "学生性别不能为空")
+        private String studentsGender;
     //学生年龄
 //    @NotNull(message = "年龄不能为空")
-    @Min (value = 18 ,message = "不小于18")
-    private Integer     studentsAge;
+//    @Min (value = 18 ,message = "不小于18")
+    @NotNull(message = "学生年龄不能为空")
+    private Integer studentsAge;
     //学生手机号
-    private  String    studentsPhone;
+    @NotNull(message = "学生手机不能为空")
+    private  String studentsPhone;
 
 
 

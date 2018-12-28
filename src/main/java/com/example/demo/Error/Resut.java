@@ -1,4 +1,4 @@
-package com.example.demo.Eorr;
+package com.example.demo.Error;
 
 
 public class Resut<T> {

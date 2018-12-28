@@ -44,11 +44,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
-        <!--MyBatis的分页插件
-        <dependency>
-             <groupId>com.github.pagehelper</groupId>
-             <artifactId>pagehelper</artifactId>
-         </dependency>-->
         <!--@Data注解-->
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -66,10 +61,6 @@
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
 
-        <!--<dependency>-->
-            <!--<groupId>com.github.pagehelper</groupId>-->
-            <!--<artifactId>pagehelper-spring-boot-starter</artifactId>-->
-        <!--</dependency>-->
     </dependencies>
 
     <build>
@@ -80,6 +71,5 @@
             </plugin>
         </plugins>
     </build>
-
 
 </project>
