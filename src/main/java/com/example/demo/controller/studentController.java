@@ -58,6 +58,7 @@ public class studentController {
         return "删除成功！";
 
     }
+
     //删除学生信息（真实删除）
     @DeleteMapping(value = "/del/{id}")
     public String del(@PathVariable(value = "id") Integer id){
