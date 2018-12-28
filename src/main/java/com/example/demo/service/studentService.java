@@ -29,6 +29,12 @@ public class studentService implements studentServiceI {                    //�
     public List<StudentsEntity> adtsels() {
         return studentsRepositery.findBystudentsDel(1);
     }
+    //按照姓名进行查询
+    @Override
+    public List<StudentsEntity> selName(String name) {
+        return studentsRepositery.findByStudentsNameEquals (name);
+    }
+
     //删除(真实删除)
     @Override
     public void sdtDel(Integer studentsId) {
@@ -38,16 +44,25 @@ public class studentService implements studentServiceI {                    //�
     @Override
     public void sdtDels(Integer studentsId) {
         StudentsEntity se =new StudentsEntity ();
-        if (se.getStudentsId () ==studentsId ){
+        if (se.getStudentsId () == studentsId ){
             se.setStudentsId (0);
         }else {
             System.out.println ("数据库没有查到这个id");
         }
     }
+    //更具姓名进行批量删除（逻辑）
+    @Override
+    public void DelAll(String name) {
+        //方法一：
+        OnedelAll(name);
+        //方法二：
+//        TowdelAll (name);
+    }
+
     //添加
     @Override
     public Object sdtadd(StudentAdd studentAdd) {
-        String sg ="[0-9]{11}";
+       String sg ="[0-9]{11}";
        String obj = studentAdd.getStudentsPhone ();
         if(Pattern.matches (sg,obj)){
             if(obj.length () == 11 & studentAdd.getStudentsGender().equals ("男") || studentAdd.getStudentsGender().equals ("女") )
@@ -75,7 +90,7 @@ public class studentService implements studentServiceI {                    //�
         se.setStudentsPhone (studentAdd.getStudentsPhone ());
         return studentsRepositery.save (se);
     }
-
+    //分页查询
     @Override
     public Page<StudentsEntity> getPageList(Integer p, Integer s, String studentsName) {
         Page<StudentsEntity> page = studentsRepositery.findAll ((root, query, cb) ->
@@ -90,8 +105,35 @@ public class studentService implements studentServiceI {                    //�
         return page;
     }
 
-    //分页实现
 
+    /**
+     * 更具姓名进行批量删除（逻辑删除）
+     **/
+    //方法一：
+    public void OnedelAll(String name){
+      List<StudentsEntity> studentsEntityList = studentsRepositery.findAll ();
+      List<StudentsEntity> requ=new ArrayList<> ();
+      studentsEntityList
+              .parallelStream ()
+              .filter (studentsEntity -> studentsEntity.getStudentsName ().equals (name))
+              .forEach (studentsEntity -> {
+                  studentsEntity.setStudentsDel (1);
+                  requ.add (studentsEntity);
+              });
+            studentsRepositery.saveAll (requ);
+
+    }
+    //方法二：
+    public void TowdelAll(String name){
+        List<StudentsEntity> studenList = studentsRepositery.findAll ();
+        List<StudentsEntity> ret2=new ArrayList<> ();
+        studenList.forEach (studentsEntity -> {
+            if (studentsEntity.getStudentsName ().equals (name)){
+                studentsEntity.setStudentsDel (1);
+                ret2.add (studentsEntity);
+            }});
+        studentsRepositery.saveAll (ret2);
+    }
 
     @Autowired              //
     private studentsRepositery studentsRepositery;

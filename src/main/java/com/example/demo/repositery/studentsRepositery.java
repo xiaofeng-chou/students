@@ -10,9 +10,10 @@ import java.util.List;
  * Jpa类
  * */
 @Repository         //
-public interface studentsRepositery extends JpaRepository<StudentsEntity,Integer>, JpaSpecificationExecutor<StudentsEntity> {
-      public List<StudentsEntity>findBystudentsDel(Integer studentsDel);
+public interface studentsRepositery extends JpaRepository<StudentsEntity,Integer>, JpaSpecificationExecutor<StudentsEntity>{
+
+    List<StudentsEntity>findBystudentsDel(Integer studentsDel);
      //用姓名来进行查询
-      public List<StudentsEntity> findByStudentsNameEquals(String studentsName);
+       List<StudentsEntity> findByStudentsNameEquals(String studentsName);
 
 }

@@ -11,11 +11,12 @@ import java.io.Serializable;
 @Data               //自动生成get和set
 @Entity             //实体类注解
 @Table(name = "students")       //对应数据库表名
+
 public class StudentsEntity implements Serializable {
 
     //学生ID
     @Id
-    @GeneratedValue
+    @GeneratedValue()
     private Integer studentsId;
     //学生姓名
     private String studentsName;
@@ -27,6 +28,5 @@ public class StudentsEntity implements Serializable {
     private  String studentsPhone;
     //是否删除
     private  Integer studentsDel;
-
 
 }
